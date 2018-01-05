@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,11 +25,11 @@ import com.toandev.gpsimage.utils.MyDialog
 import com.toandev.gpsimage.utils.MySharedPreferences
 import com.toandev.gpsimage.utils.MyUtils
 import com.toandev.gpsimage.utils.RPermission
+import kotlinx.android.synthetic.main.activity_main.*
 
 import java.io.File
 
-class MainActivity : AppCompatActivity(), OnClickListener {
-    private var mBtnStart: ImageButton? = null
+class MainActivity : AppCompatActivity(){
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             this@MainActivity.mService = (service as GPSImageService.LocalBinder).service
@@ -47,11 +48,8 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
     private var mIsBound: Boolean = false
     private var mIsUpdateService: Boolean = false
-    private var mIvGPSImage: ImageView? = null
     private var mPref: MySharedPreferences? = null
     private var mService: GPSImageService? = null
-    private var mTvGPSImageRunning: TextView? = null
-    private var mTvGPSImageStopped: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,17 +58,24 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         setContentView(R.layout.activity_main)
         this.mPref = MySharedPreferences.getInstance(this)
         initGPSImage()
-        this.mBtnStart = findViewById<View>(R.id.btnStart) as ImageButton
-        this.mBtnStart!!.setOnClickListener(this)
-        this.mTvGPSImageRunning = findViewById<View>(R.id.tvGPSImageRunning) as TextView
-        this.mTvGPSImageStopped = findViewById<View>(R.id.tvGPSImageStopped) as TextView
-        setBtnStartImage(this.mPref!!.isServiceStarted)
         showEnableDeviceDialogs()
+        setBtnStartImage(this.mPref!!.isServiceStarted)
         Log.i("hson", "Activity create")
+        mBtnStart.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            val isServiceStarted = !this.mPref!!.isServiceStarted
+            this.mPref!!.isServiceStarted = isServiceStarted
+            setBtnStartImage(isServiceStarted)
+        })
     }
 
+    private fun checkService(isServiceStarted: Boolean){
+        if (isServiceStarted) {
+            startService()
+        } else {
+            stopService()
+        }
+    }
     private fun initGPSImage() {
-        this.mIvGPSImage = findViewById<View>(R.id.ivGPSImage) as ImageView
         this.mIvGPSImage?.setOnClickListener {
             try {
                 val imagePath = this@MainActivity.mPref!!.newestImagePath
@@ -150,34 +155,15 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         }catch (e:Exception){e.printStackTrace()}
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.btnStart -> {
-                val isServiceStarted = !this.mPref!!.isServiceStarted
-                this.mPref!!.isServiceStarted = isServiceStarted
-                setBtnStartImage(isServiceStarted)
-                if (isServiceStarted) {
-                    startService()
-                    return
-                } else {
-                    stopService()
-                    return
-                }
-            }
-            else -> return
-        }
-    }
-
     private fun setBtnStartImage(isServiceStarted: Boolean) {
+        checkService(isServiceStarted)
         if (isServiceStarted) {
-            this.mBtnStart!!.setBackgroundResource(R.drawable.img_stop)
-            this.mTvGPSImageRunning!!.visibility = View.VISIBLE
-            this.mTvGPSImageStopped!!.visibility = View.INVISIBLE
+            this.mTvGPSImageRunning?.visibility = View.VISIBLE
+            this.mTvGPSImageStopped?.visibility = View.INVISIBLE
             return
         }
-        this.mBtnStart!!.setBackgroundResource(R.drawable.img_start)
-        this.mTvGPSImageRunning!!.visibility = View.INVISIBLE
-        this.mTvGPSImageStopped!!.visibility = View.VISIBLE
+        this.mTvGPSImageRunning?.visibility = View.INVISIBLE
+        this.mTvGPSImageStopped?.visibility = View.VISIBLE
     }
 
     private fun startService() {

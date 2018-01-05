@@ -108,7 +108,7 @@ class MySharedPreferences private constructor() {
         private val OUTPUT_FILE_PATH = "com.hson.gpsimage.MySharedPreferences.OUTPUT_FILE_PATH"
         private val UNIT_INFO = "com.hson.gpsimage.MySharedPreferences.UNIT_INFO"
         private var mImageQuality: Int = 0
-        private var mIsServiceStarted: Boolean = false
+        private var mIsServiceStarted: Boolean = true
         private var mMapWidth: Int = 0
         private var mMapZoom: Int = 0
         private var mNewestImagePath: String? = null
@@ -122,7 +122,7 @@ class MySharedPreferences private constructor() {
                 INSTANCE = MySharedPreferences()
                 mPref = context.getSharedPreferences("gpsimage-preferences", 0)
                 mPref?.apply {
-                    mIsServiceStarted = getBoolean(IS_SERVICE_STARTED, false)
+                    mIsServiceStarted = getBoolean(IS_SERVICE_STARTED, true)
                     mObserverFilePath = getString(OBSERVER_FILE_PATH, Environment.getExternalStorageDirectory().toString() + "/Download")
                     mOutputFilePath = getString(OUTPUT_FILE_PATH, Environment.getExternalStorageDirectory().toString() + "/GPSImage")
                     mImageQuality = getInt(IMAGE_QUALITY, 90)

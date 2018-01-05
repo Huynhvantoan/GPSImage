@@ -112,12 +112,14 @@ class ImageProcessor(private val mContext: Context) {
 
         override fun onPostExecute(aVoid: Void) {
             super.onPostExecute(aVoid)
-            if (this@ImageProcessor.mImageDatas.isEmpty()) {
-                this@ImageProcessor.mIsDataProcessing = false
-                return
-            }
-            val data = this@ImageProcessor.mImageDatas.poll() as ImageData
-            ProcessImageTask().execute(*arrayOf(data, this@ImageProcessor.genPath(data.date)))
+            try {
+                if (this@ImageProcessor.mImageDatas.isEmpty()) {
+                    this@ImageProcessor.mIsDataProcessing = false
+                    return
+                }
+                val data = this@ImageProcessor.mImageDatas.poll() as ImageData
+                ProcessImageTask().execute(*arrayOf(data, this@ImageProcessor.genPath(data.date)))
+            }catch (e:Exception){e.printStackTrace()}
         }
     }
 
