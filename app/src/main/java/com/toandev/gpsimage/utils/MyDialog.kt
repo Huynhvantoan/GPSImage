@@ -1,11 +1,7 @@
 package com.toandev.gpsimage.utils
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.DialogInterface.OnCancelListener
-import android.content.DialogInterface.OnClickListener
 import android.support.v7.app.AlertDialog
-
 import com.toandev.demogpsimage.R
 
 object MyDialog {

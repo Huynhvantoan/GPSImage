@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.content.FileProvider
@@ -13,20 +12,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.CompoundButton
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import com.toandev.demogpsimage.BuildConfig
-
 import com.toandev.demogpsimage.R
 import com.toandev.gpsimage.utils.MyDialog
 import com.toandev.gpsimage.utils.MySharedPreferences
 import com.toandev.gpsimage.utils.MyUtils
 import com.toandev.gpsimage.utils.RPermission
 import kotlinx.android.synthetic.main.activity_main.*
-
 import java.io.File
 
 class MainActivity : AppCompatActivity(){
@@ -54,8 +47,8 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE))
+        RPermission.instance.checkPermission(this, arrayOf(Manifest.permission.INTERNET, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_NETWORK_STATE))
         setContentView(R.layout.activity_main)
         this.mPref = MySharedPreferences.getInstance(this)
         initGPSImage()
@@ -63,7 +56,7 @@ class MainActivity : AppCompatActivity(){
         mBtnStart.isChecked=isServiceStarted
         setBtnStartImage(isServiceStarted)
         Log.i("hson", "Activity create")
-        mBtnStart.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        mBtnStart.setOnCheckedChangeListener({ _, _ ->
             isServiceStarted=!isServiceStarted
             setBtnStartImage(isServiceStarted)
         })
@@ -115,7 +108,6 @@ class MainActivity : AppCompatActivity(){
                 override fun onPositiveClick() {
                     this@MainActivity.startActivity(Intent("android.settings.LOCATION_SOURCE_SETTINGS"))
                 }
-
                 override fun onNegativeClick() {}
             })
         }
@@ -147,13 +139,13 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        try {
-            if (requestCode == SETTINGS_ACTIVITY && resultCode == -1 && data.getBooleanExtra(IS_UPDATE_SERVICE, false) && isServiceStarted) {
-                this.mIsUpdateService = true
+        data?.apply {
+            if (requestCode == SETTINGS_ACTIVITY && resultCode == -1 && getBooleanExtra(IS_UPDATE_SERVICE, false) && isServiceStarted) {
+                mIsUpdateService = true
             }
-        }catch (e:Exception){e.printStackTrace()}
+        }
     }
 
     private fun setBtnStartImage(isServiceStarted: Boolean) {

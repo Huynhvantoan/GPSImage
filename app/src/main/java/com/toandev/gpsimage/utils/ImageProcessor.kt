@@ -2,29 +2,19 @@ package com.toandev.gpsimage.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.util.Log
-
 import com.toandev.demogpsimage.BuildConfig
 import com.toandev.demogpsimage.R
 import com.toandev.gpsimage.GPSImageService
-import com.toandev.gpsimage.MainActivity
-
 import org.opencv.android.OpenCVLoader
 import org.opencv.android.Utils
-import org.opencv.core.CvType
-import org.opencv.core.Mat
-import org.opencv.core.MatOfInt
-import org.opencv.core.Rect
-import org.opencv.core.Size
+import org.opencv.core.*
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
-
 import java.io.File
 import java.io.IOException
-import java.util.LinkedList
-import java.util.Queue
+import java.util.*
 
 class ImageProcessor(private val mContext: Context) {
     private val mImageDatas: Queue<ImageData>
@@ -124,9 +114,9 @@ class ImageProcessor(private val mContext: Context) {
     }
 
     init {
-        if (!OpenCVLoader.initDebug()) {
+        /*if (!OpenCVLoader.initDebug()) {
             Log.i("hson", "error")
-        }
+        }*/
         this.mIsDataProcessing = false
         this.mImageDatas = LinkedList()
     }

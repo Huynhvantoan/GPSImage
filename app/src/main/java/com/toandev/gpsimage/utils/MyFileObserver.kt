@@ -3,13 +3,11 @@ package com.toandev.gpsimage.utils
 import android.content.Context
 import android.os.FileObserver
 import android.util.Log
-
 import org.opencv.imgproc.Imgproc
 import org.opencv.video.Video
 import org.opencv.videoio.Videoio
-
 import java.io.File
-import java.util.ArrayList
+import java.util.*
 
 open class MyFileObserver(context: Context) {
     private var mFileObserver: FileObserver? = null

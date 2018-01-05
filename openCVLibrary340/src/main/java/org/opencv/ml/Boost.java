@@ -4,8 +4,6 @@
 //
 package org.opencv.ml;
 
-import java.lang.String;
-
 // C++: class Boost
 //javadoc: Boost
 
