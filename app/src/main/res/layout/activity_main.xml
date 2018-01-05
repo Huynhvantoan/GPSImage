@@ -50,6 +50,7 @@
             app:kswTextExtra="10dp"
             app:kswTextOff="OFF"
             app:kswTextOn="ON" />
+
         <TextView
             android:id="@+id/mTvGPSImageRunning"
             android:layout_width="wrap_content"

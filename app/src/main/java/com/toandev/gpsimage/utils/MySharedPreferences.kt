@@ -3,6 +3,7 @@ package com.toandev.gpsimage.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Environment
+import android.util.Log
 
 import com.toandev.demogpsimage.BuildConfig
 
@@ -58,6 +59,7 @@ class MySharedPreferences private constructor() {
             mIsServiceStarted = isServiceStarted
             mPref?.apply {
                 val editor =edit()
+                Log.e("editor=",isServiceStarted.toString())
                 editor.putBoolean(IS_SERVICE_STARTED, mIsServiceStarted)
                 editor.apply()
             }

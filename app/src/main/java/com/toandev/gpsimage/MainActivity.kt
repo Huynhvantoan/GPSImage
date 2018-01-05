@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(){
             this@MainActivity.mService = null
         }
     }
+    private var isServiceStarted = true
     private var mIsBound: Boolean = false
     private var mIsUpdateService: Boolean = false
     private var mPref: MySharedPreferences? = null
@@ -59,11 +60,11 @@ class MainActivity : AppCompatActivity(){
         this.mPref = MySharedPreferences.getInstance(this)
         initGPSImage()
         showEnableDeviceDialogs()
-        setBtnStartImage(this.mPref!!.isServiceStarted)
+        mBtnStart.isChecked=isServiceStarted
+        setBtnStartImage(isServiceStarted)
         Log.i("hson", "Activity create")
         mBtnStart.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            val isServiceStarted = !this.mPref!!.isServiceStarted
-            this.mPref!!.isServiceStarted = isServiceStarted
+            isServiceStarted=!isServiceStarted
             setBtnStartImage(isServiceStarted)
         })
     }
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         try {
-            if (requestCode == SETTINGS_ACTIVITY && resultCode == -1 && data.getBooleanExtra(IS_UPDATE_SERVICE, false) && this.mPref!!.isServiceStarted) {
+            if (requestCode == SETTINGS_ACTIVITY && resultCode == -1 && data.getBooleanExtra(IS_UPDATE_SERVICE, false) && isServiceStarted) {
                 this.mIsUpdateService = true
             }
         }catch (e:Exception){e.printStackTrace()}
