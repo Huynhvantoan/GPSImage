@@ -212,6 +212,6 @@ class SettingsActivity : AppCompatActivity(), OnClickListener, OnSeekBarChangeLi
 
     fun showDialog(folderPath: String, tag: String) {
         this.mDialog = DirectoryChooserFragment.newInstance(DirectoryChooserConfig.builder().newDirectoryName(getString(R.string.new_directory_name)).initialDirectory(folderPath).allowNewDirectoryNameModification(true).build())
-        this.mDialog!!.show(fragmentManager, tag)
+        this.mDialog?.show(fragmentManager, tag)
     }
 }
