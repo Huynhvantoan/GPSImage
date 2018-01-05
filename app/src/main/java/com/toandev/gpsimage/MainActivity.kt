@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     private fun initGPSImage() {
         this.mIvGPSImage = findViewById<View>(R.id.ivGPSImage) as ImageView
-        this.mIvGPSImage!!.setOnClickListener {
+        this.mIvGPSImage?.setOnClickListener {
             try {
                 val imagePath = this@MainActivity.mPref!!.newestImagePath
                 if (imagePath != null && !imagePath.isEmpty()) {
@@ -132,12 +132,12 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.settings /*2131492998*/ -> {
                 startActivityForResult(Intent(this, SettingsActivity::class.java), SETTINGS_ACTIVITY)
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btnStart /*2131492950*/ -> {
+            R.id.btnStart -> {
                 val isServiceStarted = !this.mPref!!.isServiceStarted
                 this.mPref!!.isServiceStarted = isServiceStarted
                 setBtnStartImage(isServiceStarted)
@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         }
     }
 
-    fun setBtnStartImage(isServiceStarted: Boolean) {
+    private fun setBtnStartImage(isServiceStarted: Boolean) {
         if (isServiceStarted) {
             this.mBtnStart!!.setBackgroundResource(R.drawable.img_stop)
             this.mTvGPSImageRunning!!.visibility = View.VISIBLE
@@ -180,23 +180,23 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         this.mTvGPSImageStopped!!.visibility = View.VISIBLE
     }
 
-    fun startService() {
+    private fun startService() {
         startService(Intent(this, GPSImageService::class.java))
     }
 
-    fun stopService() {
-        if (this.mService != null) {
-            this.mService!!.stopForeground(true)
-            this.mService!!.stopSelf()
+    private fun stopService() {
+        this.mService?.apply {
+            stopForeground(true)
+            stopSelf()
         }
     }
 
-    internal fun doBindService() {
+    private fun doBindService() {
         bindService(Intent(this, GPSImageService::class.java), this.mConnection, SETTINGS_ACTIVITY)
         this.mIsBound = true
     }
 
-    internal fun doUnbindService() {
+    private fun doUnbindService() {
         if (this.mIsBound) {
             unbindService(this.mConnection)
             this.mIsBound = false
@@ -225,12 +225,12 @@ class MainActivity : AppCompatActivity(), OnClickListener {
     }
 
     fun updateGPSImageView(outputPath: String) {
-        MyUtils.setImage(this.mIvGPSImage, outputPath, null)
+        MyUtils.setImage(this.mIvGPSImage!!, outputPath)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        MyUtils.setImage(this.mIvGPSImage, this.mPref!!.newestImagePath, null)
+        MyUtils.setImage(this.mIvGPSImage!!, this.mPref?.newestImagePath!!)
         Log.i("hson", "Activity onWindowFocusChanged")
     }
 

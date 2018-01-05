@@ -181,11 +181,11 @@ class SettingsActivity : AppCompatActivity(), OnClickListener, OnSeekBarChangeLi
         this.mDialog!!.dismiss()
         when (Integer.parseInt(this.mDialog!!.tag)) {
             R.id.etInputFolder /*2131492954*/ -> {
-                this.etInputFolder!!.setText(path)
+                this.etInputFolder?.setText(path)
                 return
             }
             R.id.etOutputFolder /*2131492956*/ -> {
-                this.etOutputFolder!!.setText(path)
+                this.etOutputFolder?.setText(path)
                 return
             }
             else -> return
@@ -193,17 +193,17 @@ class SettingsActivity : AppCompatActivity(), OnClickListener, OnSeekBarChangeLi
     }
 
     override fun onCancelChooser() {
-        this.mDialog!!.dismiss()
+        this.mDialog?.dismiss()
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.etInputFolder /*2131492954*/ -> {
-                showDialog(this.etInputFolder!!.text.toString(), R.id.etInputFolder.toString())
+                showDialog(this.etInputFolder?.text.toString(), R.id.etInputFolder.toString())
                 return
             }
             R.id.etOutputFolder /*2131492956*/ -> {
-                showDialog(this.etOutputFolder!!.text.toString(), R.id.etOutputFolder.toString())
+                showDialog(this.etOutputFolder?.text.toString(), R.id.etOutputFolder.toString())
                 return
             }
             else -> return

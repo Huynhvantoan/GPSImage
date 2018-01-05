@@ -30,7 +30,7 @@ class GPSImageService : Service() {
         super.onCreate()
         Log.i("hson", "service oncreate call")
         this.mLocation = MyLocation(this)
-        this.mLocation!!.requestGPSUpdate()
+        this.mLocation?.requestGPSUpdate()
         this.mImageProcessor = ImageProcessor(this)
         this.mFileObserver = object : MyFileObserver(this) {
             override fun processFile(filePath: String) {
@@ -39,7 +39,7 @@ class GPSImageService : Service() {
                 processor?.process(ImageProcessor.ImageData(filePath, this@GPSImageService.mLocation!!.latitude, this@GPSImageService.mLocation!!.longitude, MyUtils.getImageTime(filePath), MyUtils.getImageDate(filePath)))
             }
         }
-        this.mFileObserver!!.startWatching()
+        this.mFileObserver?.startWatching()
     }
 
     override fun onStartCommand(intent: Intent, i: Int, j: Int): Int {
@@ -48,8 +48,8 @@ class GPSImageService : Service() {
     }
 
     override fun onDestroy() {
-        this.mLocation!!.removeUpdates()
-        this.mFileObserver!!.stopWatching()
+        this.mLocation?.removeUpdates()
+        this.mFileObserver?.stopWatching()
         Log.i("hson", "service onDestroy call")
     }
 
@@ -58,7 +58,13 @@ class GPSImageService : Service() {
     }
 
     private fun showNotification() {
-        startForeground(1, Notification.Builder(this).setSmallIcon(R.drawable.ic_marker).setTicker(getString(R.string.noti_status_text)).setWhen(System.currentTimeMillis()).setContentTitle(getString(R.string.noti_content_title)).setContentText(getString(R.string.noti_content_text)).setContentIntent(PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)).build())
+        startForeground(1, Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_location_marker_flat)
+                .setTicker(getString(R.string.noti_status_text))
+                .setWhen(System.currentTimeMillis())
+                .setContentTitle(getString(R.string.noti_content_title))
+                .setContentText(getString(R.string.noti_content_text))
+                .setContentIntent(PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), 0)).build())
     }
 
     fun updateService(observerPath: String) {

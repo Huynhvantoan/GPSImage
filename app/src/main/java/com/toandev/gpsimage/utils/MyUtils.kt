@@ -482,20 +482,6 @@ class MyUtils {
             return false
         }
 
-        @Throws(IOException::class)
-        fun getEntrySize(context: Context, fileName: String): Int {
-            val zis = ZipInputStream(BufferedInputStream(context.assets.open(fileName)))
-            var entryCount = 0
-            while (zis.nextEntry != null) {
-                try {
-                    entryCount++
-                } finally {
-                    zis.close()
-                }
-            }
-            return entryCount
-        }
-
         fun captureView(view: View): Bitmap {
             val image = Bitmap.createBitmap(Videoio.CAP_QT, Videoio.CV_CAP_ANDROID, Config.ARGB_8888)
             view.draw(Canvas(image))
@@ -693,7 +679,7 @@ class MyUtils {
         }
 
         @SuppressLint("StaticFieldLeak")
-        fun setImage(imageview: ImageView, newestImagePath: String, defaultImagePath: String) {
+        fun setImage(imageview: ImageView, newestImagePath: String) {
             if (File(newestImagePath).exists()) {
                 object : AsyncTask<Void, Void, Bitmap>() {
                     internal var height: Int = 0
