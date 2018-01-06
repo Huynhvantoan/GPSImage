@@ -23,9 +23,9 @@ class ImageProcessor(private val mContext: Context) {
     class ImageData(val inputPath: String, val latitude: Double, val longitude: Double, val time: String, val date: String)
 
     @SuppressLint("StaticFieldLeak")
-    internal inner class ProcessImageTask : AsyncTask<Any, Void, Void>() {
+    internal inner class ProcessImageTask : AsyncTask<Any?, Void?, Void?>() {
 
-        override fun doInBackground(vararg params: Any): Void? {
+        override fun doInBackground(vararg params: Any?): Void? {
             val pref = MySharedPreferences.getInstance(this@ImageProcessor.mContext)
             val imageData = params[0] as ImageData
             val outputPath = params[1] as String
@@ -100,7 +100,7 @@ class ImageProcessor(private val mContext: Context) {
 
         }
 
-        override fun onPostExecute(aVoid: Void) {
+        override fun onPostExecute(aVoid: Void?) {
             super.onPostExecute(aVoid)
             try {
                 if (this@ImageProcessor.mImageDatas.isEmpty()) {

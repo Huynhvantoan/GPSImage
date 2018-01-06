@@ -32,8 +32,8 @@
         android:id="@+id/directoryInfo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/btnNavUp"
