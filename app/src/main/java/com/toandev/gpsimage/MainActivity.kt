@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity(){
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.settings /*2131492998*/ -> {
+            R.id.settings-> {
                 startActivityForResult(Intent(this, SettingsActivity::class.java), SETTINGS_ACTIVITY)
                 true
             }
